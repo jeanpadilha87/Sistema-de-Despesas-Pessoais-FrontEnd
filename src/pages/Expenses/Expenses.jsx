@@ -25,21 +25,25 @@ function Expenses() {
     const [editingId, setEditingId] = useState(null);
 
     // Carrega despesas.
-    async function loadExpenses() {
+  async function loadExpenses() {
 
-        try {
+    try {
 
-            const response = await api.get("/expenses");
+        const response = await api.get("/expenses");
 
-            setExpenses(response.data);
+        console.log("RETORNO DA API:");
 
-        }
+        console.log(response.data);
 
-        catch (error) {
+        setExpenses(response.data);
 
-            console.error(error);
+    }
 
-            alert("Erro ao carregar despesas.");
+    catch (error) {
+
+        console.error(error);
+
+        alert("Erro ao carregar despesas.");
 
         }
 
