@@ -1,4 +1,4 @@
-// Página de gerenciamento de categorias.
+// Página de gerenciamento de categorias do SGP.
 
 import { useEffect, useState } from "react";
 import api from "../../services/api";
@@ -12,8 +12,11 @@ function Categories() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
-    // Controla a exibição do formulário.
+    // Controla o formulário.
     const [showForm, setShowForm] = useState(false);
+
+    // Armazena a categoria em edição.
+    const [editingId, setEditingId] = useState(null);
 
     // Carrega todas as categorias.
     async function loadCategories() {
@@ -36,26 +39,59 @@ function Categories() {
 
     }
 
-    // Salva uma nova categoria.
+    // Executa quando a página abre.
+    useEffect(() => {
+
+        loadCategories();
+
+    }, []);
+
+    // Limpa o formulário.
+    function clearForm() {
+
+        setName("");
+
+        setDescription("");
+
+        setEditingId(null);
+
+        setShowForm(false);
+
+    }
+
+    // Salva uma categoria.
     async function saveCategory() {
 
         try {
 
-            await api.post("/categories", {
+            if (editingId === null) {
 
-                name,
-                description
+                await api.post("/categories", {
 
-            });
+                    name,
+                    description
 
-            // Limpa os campos.
-            setName("");
-            setDescription("");
+                });
 
-            // Fecha o formulário.
-            setShowForm(false);
+            } else {
 
-            // Atualiza a lista.
+                await api.put(
+
+                    `/categories/${editingId}`,
+
+                    {
+
+                        name,
+                        description
+
+                    }
+
+                );
+
+            }
+
+            clearForm();
+
             loadCategories();
 
         }
@@ -64,18 +100,57 @@ function Categories() {
 
             console.error(error);
 
-            alert("Erro ao cadastrar categoria.");
+            alert("Erro ao salvar categoria.");
 
         }
 
     }
 
-    // Executa apenas uma vez ao abrir a página.
-    useEffect(() => {
+    // Preenche o formulário para edição.
+    function editCategory(category) {
 
-        loadCategories();
+        setEditingId(category.id);
 
-    }, []);
+        setName(category.name);
+
+        setDescription(category.description);
+
+        setShowForm(true);
+
+    }
+
+    // Remove uma categoria.
+    async function deleteCategory(id) {
+
+        const confirmDelete = window.confirm(
+
+            "Deseja realmente excluir esta categoria?"
+
+        );
+
+        if (!confirmDelete) {
+
+            return;
+
+        }
+
+        try {
+
+            await api.delete(`/categories/${id}`);
+
+            loadCategories();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert("Erro ao excluir categoria.");
+
+        }
+
+    }
 
     return (
 
@@ -93,7 +168,13 @@ function Categories() {
 
                     className="btn btn-success"
 
-                    onClick={() => setShowForm(!showForm)}
+                    onClick={() => {
+
+                        clearForm();
+
+                        setShowForm(true);
+
+                    }}
 
                 >
 
@@ -155,17 +236,33 @@ function Categories() {
 
                             </div>
 
-                            <button
+                            <div className="d-flex gap-2">
 
-                                className="btn btn-primary"
+                                <button
 
-                                onClick={saveCategory}
+                                    className="btn btn-primary"
 
-                            >
+                                    onClick={saveCategory}
 
-                                Salvar
+                                >
 
-                            </button>
+                                    {editingId === null ? "Salvar" : "Atualizar"}
+
+                                </button>
+
+                                <button
+
+                                    className="btn btn-secondary"
+
+                                    onClick={clearForm}
+
+                                >
+
+                                    Cancelar
+
+                                </button>
+
+                            </div>
 
                         </div>
 
@@ -175,60 +272,62 @@ function Categories() {
 
             }
 
-            <table className="table table-striped table-bordered">
+            <table className="table table-striped table-bordered table-hover">
 
-                <thead>
+    <thead className="table-dark">
 
-                    <tr>
+        <tr>
 
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th width="180">Ações</th>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th width="180">Ações</th>
 
-                    </tr>
+        </tr>
 
-                </thead>
+    </thead>
 
-                <tbody>
+    <tbody>
 
-                    {
+        {
 
-                        categories.map((category) => (
+            categories.map((category) => (
 
-                            <tr key={category.id}>
+                <tr key={category.id}>
 
-                                <td>{category.id}</td>
+                    <td>{category.id}</td>
 
-                                <td>{category.name}</td>
+                    <td>{category.name}</td>
 
-                                <td>{category.description}</td>
+                    <td>{category.description}</td>
 
-                                <td>
+                    <td>
 
-                                    <button className="btn btn-warning btn-sm me-2">
+                        <button
+                            className="btn btn-warning btn-sm me-2"
+                            onClick={() => editCategory(category)}
+                        >
+                            Editar
+                        </button>
 
-                                        Editar
+                        <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => deleteCategory(category.id)}
+                        >
+                            Excluir
+                        </button>
 
-                                    </button>
+                    </td>
 
-                                    <button className="btn btn-danger btn-sm">
+                </tr>
 
-                                        Excluir
+            ))
 
-                                    </button>
+        }
 
-                                </td>
+    </tbody>
 
-                            </tr>
-
-                        ))
-
-                    }
-
-                </tbody>
-
-            </table>
+</table>
 
         </div>
 
@@ -237,3 +336,4 @@ function Categories() {
 }
 
 export default Categories;
+                
