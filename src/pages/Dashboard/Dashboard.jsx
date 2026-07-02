@@ -1,7 +1,6 @@
 // Dashboard do SGP.
 
 import { useEffect, useState } from "react";
-
 import api from "../../services/api";
 
 function Dashboard() {
@@ -50,23 +49,43 @@ function Dashboard() {
 
             <h2 className="mb-4">
 
-                Bem-vindo, {user?.name}
+                Bem-vindo, {user?.name}! 👋
 
             </h2>
 
-            <div className="row">
+            <div className="row g-4">
 
                 <div className="col-md-4">
 
-                    <div className="card text-center shadow">
+                    <div className="card shadow border-0">
 
-                        <div className="card-body">
+                        <div className="card-body text-center">
 
-                            <h5>Total de Despesas</h5>
+                            <h6 className="text-muted">
 
-                            <h2>
+                                Total de Despesas
 
-                                R$ {total}
+                            </h6>
+
+                            <h2 className="text-danger">
+
+                                {
+
+                                    Number(total).toLocaleString(
+
+                                        "pt-BR",
+
+                                        {
+
+                                            style: "currency",
+
+                                            currency: "BRL"
+
+                                        }
+
+                                    )
+
+                                }
 
                             </h2>
 
@@ -78,13 +97,17 @@ function Dashboard() {
 
                 <div className="col-md-4">
 
-                    <div className="card text-center shadow">
+                    <div className="card shadow border-0">
 
-                        <div className="card-body">
+                        <div className="card-body text-center">
 
-                            <h5>Quantidade</h5>
+                            <h6 className="text-muted">
 
-                            <h2>
+                                Quantidade de Despesas
+
+                            </h6>
+
+                            <h2 className="text-primary">
 
                                 {quantidade}
 
@@ -98,21 +121,66 @@ function Dashboard() {
 
                 <div className="col-md-4">
 
-                    <div className="card shadow">
+                    <div className="card shadow border-0">
 
                         <div className="card-body">
 
-                            <h5>Categorias</h5>
+                            <h6 className="text-center mb-3 text-muted">
+
+                                Gastos por Categoria
+
+                            </h6>
 
                             {
 
-                                categorias.map((categoria, index) => (
+                                categorias.length === 0 ? (
 
-                                    <p key={index}>
+                                    <p className="text-center">
 
-                                        Categoria {categoria.categoria}: R$ {categoria.total}
+                                        Nenhuma despesa cadastrada.
 
                                     </p>
+
+                                )
+
+                                :
+
+                                categorias.map((categoria) => (
+
+                                    <div
+                                        key={categoria.categoria}
+                                        className="d-flex justify-content-between border-bottom py-2"
+                                    >
+
+                                        <strong>
+
+                                            Categoria {categoria.categoria}
+
+                                        </strong>
+
+                                        <span>
+
+                                            {
+
+                                                Number(categoria.total).toLocaleString(
+
+                                                    "pt-BR",
+
+                                                    {
+
+                                                        style: "currency",
+
+                                                        currency: "BRL"
+
+                                                    }
+
+                                                )
+
+                                            }
+
+                                        </span>
+
+                                    </div>
 
                                 ))
 

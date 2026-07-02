@@ -482,13 +482,16 @@ function Expenses() {
 
                                 <td>
 
-                                    R$ {Number(expense.amount).toFixed(2)}
+                                    {Number(expense.amount).toLocaleString("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL"
+                                    })}
 
                                 </td>
 
                                 <td>
 
-                                    {expense.date}
+                                    {new Date(expense.date).toLocaleDateString("pt-BR")}
 
                                 </td>
 
