@@ -503,7 +503,7 @@ function Expenses() {
 
                                 <td>
 
-                                    {expense.categoryId}
+                                    {expense.category?.name}
 
                                 </td>
 

@@ -154,7 +154,7 @@ function Dashboard() {
 
                                         <strong>
 
-                                            Categoria {categoria.categoria}
+                                            {categoria.categoria}
 
                                         </strong>
 
