@@ -1,16 +1,74 @@
-# React + Vite
+Sistema de Gestão Pessoal (SGP)
+Autor: Jean Padilha
+Curso: Análise e Desenvolvimento de Sistemas
+Instituição: Senac Joinville
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Observação
 
-Currently, two official plugins are available:
+Este projeto foi desenvolvido como atividade prática das disciplinas de
+Backend e Frontend, utilizando arquitetura baseada em API REST e
+integração entre frontend React e backend Node.js.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+O sistema permite realizar o gerenciamento de despesas pessoais,
+possibilitando o cadastro, edição, exclusão, consulta e filtragem de
+despesas e categorias.
 
-## React Compiler
+Tecnologias Utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Frontend
 
-## Expanding the ESLint configuration
+-   React
+-   React Router DOM
+-   Axios
+-   Context API
+-   Bootstrap 5
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Backend
+
+-   Node.js
+-   Express
+-   Sequelize
+-   MySQL
+-   JWT
+-   bcrypt
+
+Funcionalidades
+
+-   Login
+-   Persistência da sessão
+-   Logout
+-   Dashboard
+-   CRUD de Categorias
+-   CRUD de Despesas
+-   Filtros por Categoria, Status, Data e Valor
+-   Loading nas telas
+-   Validação de formulários
+-   Interface responsiva
+
+Estrutura
+
+    src/
+    ├── components/
+    ├── contexts/
+    ├── hooks/
+    ├── layouts/
+    ├── pages/
+    ├── routes/
+    ├── services/
+    └── styles/
+
+Execução
+
+Backend
+
+    npm install
+    npm start
+
+Servidor: http://localhost:3000
+
+Frontend
+
+    npm install
+    npm run dev
+
+Aplicação: http://localhost:5173
