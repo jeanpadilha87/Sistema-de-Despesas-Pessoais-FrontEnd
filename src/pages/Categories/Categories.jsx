@@ -8,6 +8,9 @@ function Categories() {
     // Lista de categorias.
     const [categories, setCategories] = useState([]);
 
+    // Controla o carregamento da tela.
+    const [loading, setLoading] = useState(true);
+
     // Campos do formulário.
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -22,15 +25,15 @@ function Categories() {
     async function loadCategories() {
 
         try {
-
+            setLoading(true);
             const response = await api.get("/categories");
 
             setCategories(response.data);
-
+            setLoading(false);
         }
 
         catch (error) {
-
+            setLoading(false);
             console.error(error);
 
             alert("Erro ao carregar categorias.");
@@ -305,7 +308,36 @@ function Categories() {
 
     <tbody>
 
-        {
+    {
+
+        loading ? (
+
+            <tr>
+
+                <td colSpan="4" className="text-center py-5">
+
+                    <div
+                        className="spinner-border text-primary mb-3"
+                        role="status"
+                    >
+
+                        <span className="visually-hidden">
+
+                            Carregando...
+
+                        </span>
+
+                    </div>
+
+                    <br />
+
+                    Carregando categorias...
+
+                </td>
+
+            </tr>
+
+        ) : (
 
             categories.map((category) => (
 
@@ -323,14 +355,18 @@ function Categories() {
                             className="btn btn-warning btn-sm me-2"
                             onClick={() => editCategory(category)}
                         >
+
                             Editar
+
                         </button>
 
                         <button
                             className="btn btn-danger btn-sm"
                             onClick={() => deleteCategory(category.id)}
                         >
+
                             Excluir
+
                         </button>
 
                     </td>
@@ -339,9 +375,11 @@ function Categories() {
 
             ))
 
-        }
+        )
 
-    </tbody>
+    }
+
+</tbody>
 
 </table>
 
