@@ -10,6 +10,14 @@ function Expenses() {
 
     // Lista de categorias.
     const [categories, setCategories] = useState([]);
+    
+    // Campos dos filtros.
+    const [filterCategoryId, setFilterCategoryId] = useState("");
+    const [filterStatus, setFilterStatus] = useState("");
+    const [filterStartDate, setFilterStartDate] = useState("");
+    const [filterEndDate, setFilterEndDate] = useState("");
+    const [filterMinAmount, setFilterMinAmount] = useState("");
+    const [filterMaxAmount, setFilterMaxAmount] = useState("");
 
     // Campos do formulário.
     const [description, setDescription] = useState("");
@@ -29,7 +37,49 @@ function Expenses() {
 
     try {
 
-        const response = await api.get("/expenses");
+                const params = {};
+
+        if (filterStatus) {
+
+            params.status = filterStatus;
+
+        }
+
+        if (filterCategoryId) {
+
+            params.categoryId = filterCategoryId;
+
+        }
+
+        if (filterStartDate) {
+
+            params.startDate = filterStartDate;
+
+        }
+
+        if (filterEndDate) {
+
+            params.endDate = filterEndDate;
+
+        }
+
+        if (filterMinAmount) {
+
+            params.minAmount = filterMinAmount;
+
+        }
+
+        if (filterMaxAmount) {
+
+            params.maxAmount = filterMaxAmount;
+
+        }
+
+        const response = await api.get("/expenses", {
+
+            params
+
+        });
 
         console.log("RETORNO DA API:");
 
@@ -68,13 +118,31 @@ function Expenses() {
 
     }
 
-    useEffect(() => {
+  useEffect(() => {
 
-        loadExpenses();
+    loadExpenses();
 
-        loadCategories();
+}, [
 
-    }, []);
+    filterStatus,
+
+    filterCategoryId,
+
+    filterStartDate,
+
+    filterEndDate,
+
+    filterMinAmount,
+
+    filterMaxAmount
+
+]);
+
+useEffect(() => {
+
+    loadCategories();
+
+}, []);
 
     // Limpa formulário.
     function clearForm() {
@@ -226,7 +294,233 @@ function Expenses() {
                 </button>
 
             </div>
+<div className="card shadow-sm mb-4">
 
+    <div className="card-body">
+
+        <h5 className="mb-3">
+
+            Filtros
+
+        </h5>
+
+        <div className="row">
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Categoria
+
+                </label>
+
+                <select
+
+                    className="form-select"
+
+                    value={filterCategoryId}
+
+                    onChange={(e) => setFilterCategoryId(e.target.value)}
+
+                >
+
+                    <option value="">
+
+                        Todas
+
+                    </option>
+
+                    {
+
+                        categories.map((category) => (
+
+                            <option
+
+                                key={category.id}
+
+                                value={category.id}
+
+                            >
+
+                                {category.name}
+
+                            </option>
+
+                        ))
+
+                    }
+
+                </select>
+
+            </div>
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Status
+
+                </label>
+
+                <select
+
+                    className="form-select"
+
+                    value={filterStatus}
+
+                    onChange={(e) => setFilterStatus(e.target.value)}
+
+                >
+
+                    <option value="">
+
+                        Todos
+
+                    </option>
+
+                    <option value="PENDENTE">
+
+                        Pendente
+
+                    </option>
+
+                    <option value="PAGA">
+
+                        Paga
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Data Inicial
+
+                </label>
+
+                <input
+
+                    type="date"
+
+                    className="form-control"
+
+                    value={filterStartDate}
+
+                    onChange={(e) => setFilterStartDate(e.target.value)}
+
+                />
+
+            </div>
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Data Final
+
+                </label>
+
+                <input
+
+                    type="date"
+
+                    className="form-control"
+
+                    value={filterEndDate}
+
+                    onChange={(e) => setFilterEndDate(e.target.value)}
+
+                />
+
+            </div>
+
+        </div>
+
+        <div className="row mt-3">
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Valor Mínimo
+
+                </label>
+
+                <input
+
+                    type="number"
+
+                    className="form-control"
+
+                    value={filterMinAmount}
+
+                    onChange={(e) => setFilterMinAmount(e.target.value)}
+
+                />
+
+            </div>
+
+            <div className="col-md-3">
+
+                <label className="form-label">
+
+                    Valor Máximo
+
+                </label>
+
+                <input
+
+                    type="number"
+
+                    className="form-control"
+
+                    value={filterMaxAmount}
+
+                    onChange={(e) => setFilterMaxAmount(e.target.value)}
+
+                />
+
+            </div>
+
+            <div className="col-md-6 d-flex align-items-end">
+
+                <button
+
+                    className="btn btn-secondary"
+
+                    onClick={() => {
+
+                        setFilterCategoryId("");
+
+                        setFilterStatus("");
+
+                        setFilterStartDate("");
+
+                        setFilterEndDate("");
+
+                        setFilterMinAmount("");
+
+                        setFilterMaxAmount("");
+
+                    }}
+
+                >
+
+                    Limpar Filtros
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
             {
 
                 showForm && (
