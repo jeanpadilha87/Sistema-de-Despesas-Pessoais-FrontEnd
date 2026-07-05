@@ -22,6 +22,7 @@ Frontend
 -   Axios
 -   Context API
 -   Bootstrap 5
+-   Recharts (gráficos)
 
 Backend
 
@@ -44,6 +45,7 @@ Funcionalidades
 -   Loading nas telas
 -   Validação de formulários
 -   Interface responsiva
+-   Gráfico de distribuição das despesas por categoria
 
 Estrutura
 

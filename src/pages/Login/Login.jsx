@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logoSgp from "../../assets/LOGO.png";
 
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
@@ -67,19 +68,28 @@ function Login() {
 
                     <div className="card shadow">
 
-                        <div className="card-body">
+                        <div className="card-body p-4">
 
-                            <h1 className="text-center mb-2">
+                            <div className="text-center mb-4">
 
-                                SGP
+                                <img
 
-                            </h1>
+                                    src={logoSgp}
 
-                            <h4 className="text-center mb-4">
+                                    alt="Sistema de Gestão Pessoal"
 
-                                Sistema de Gestão Pessoal
+                                    className="img-fluid"
 
-                            </h4>
+                                    style={{
+
+                                        maxWidth: "500px",
+
+                                        height: "auto"
+
+                                    }}
+
+                                />
+                            </div>
 
                             <div className="mb-3">
 
@@ -98,6 +108,8 @@ function Login() {
                                     value={email}
 
                                     onChange={(e) => setEmail(e.target.value)}
+
+                                    placeholder="Digite seu e-mail"
 
                                 />
 
@@ -120,6 +132,8 @@ function Login() {
                                     value={password}
 
                                     onChange={(e) => setPassword(e.target.value)}
+
+                                    placeholder="Digite sua senha"
 
                                 />
 
