@@ -63,6 +63,22 @@ function Categories() {
     async function saveCategory() {
 
         try {
+                        // Validação dos campos obrigatórios.
+            if (!name.trim()) {
+
+                alert("Informe o nome da categoria.");
+
+                return;
+
+            }
+
+            if (!description.trim()) {
+
+                alert("Informe a descrição da categoria.");
+
+                return;
+
+            }
 
             if (editingId === null) {
 

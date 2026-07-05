@@ -173,7 +173,38 @@ useEffect(() => {
     async function saveExpense() {
 
         try {
+            // Validação dos campos obrigatórios.
+            if (!description.trim()) {
 
+                alert("Informe a descrição da despesa.");
+
+                return;
+
+            }
+
+            if (!amount || Number(amount) <= 0) {
+
+                alert("Informe um valor maior que zero.");
+
+                return;
+
+            }
+
+            if (!date) {
+
+                alert("Informe a data da despesa.");
+
+                return;
+
+            }
+
+            if (!categoryId) {
+
+                alert("Selecione uma categoria.");
+
+                return;
+
+            }
             const expense = {
 
                 description,
