@@ -4,10 +4,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
+import useAuth from "../../hooks/useAuth";
 
 function Login() {
 
     const navigate = useNavigate();
+
+    const { login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,13 +26,12 @@ function Login() {
 
             });
 
-            localStorage.setItem("token", response.data.token);
+            // Salva usuário e token utilizando o Context API.
+            login(
 
-            localStorage.setItem(
+                response.data.user,
 
-                "user",
-
-                JSON.stringify(response.data.user)
+                response.data.token
 
             );
 
@@ -37,21 +39,21 @@ function Login() {
 
         }
 
-catch (error) {
+        catch (error) {
 
-    console.log("===== ERRO =====");
+            console.log("===== ERRO =====");
 
-    console.log(error);
+            console.log(error);
 
-    console.log(error.response);
+            console.log(error.response);
 
-    console.log(error.response?.data);
+            console.log(error.response?.data);
 
-    console.log(error.response?.status);
+            console.log(error.response?.status);
 
-    alert("Erro no login.");
+            alert("Erro no login.");
 
-}
+        }
 
     }
 

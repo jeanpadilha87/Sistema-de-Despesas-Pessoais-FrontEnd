@@ -1,14 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import useAuth from "../hooks/useAuth";
+
 function Navbar() {
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    function logout() {
+    const { logout } = useAuth();
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+    function handleLogout() {
+
+        logout();
 
         navigate("/");
 
@@ -96,7 +99,7 @@ function Navbar() {
 
                     <button
                         className="btn btn-outline-light"
-                        onClick={logout}
+                        onClick={handleLogout}
                     >
 
                         Sair
