@@ -1,15 +1,23 @@
 // Dashboard do SGP.
 
 import { useEffect, useState } from "react";
+
 import api from "../../services/api";
+
+import useAuth from "../../hooks/useAuth";
 
 function Dashboard() {
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { user } = useAuth();
 
     const [total, setTotal] = useState(0);
+
     const [quantidade, setQuantidade] = useState(0);
+
     const [categorias, setCategorias] = useState([]);
+
+    // Últimas despesas cadastradas.
+    const [ultimasDespesas, setUltimasDespesas] = useState([]);
 
     useEffect(() => {
 
@@ -27,11 +35,28 @@ function Dashboard() {
 
             const categoriaResponse = await api.get("/dashboard/expenses-by-category");
 
+            // Busca todas as despesas.
+            const despesasResponse = await api.get("/expenses");
+
             setTotal(totalResponse.data.total);
 
             setQuantidade(quantidadeResponse.data.quantidade);
 
             setCategorias(categoriaResponse.data);
+
+            // Ordena da mais recente para a mais antiga
+            // e mantém apenas as 5 últimas.
+            const ultimas = despesasResponse.data
+
+                .sort(
+
+                    (a, b) => new Date(b.date) - new Date(a.date)
+
+                )
+
+                .slice(0, 5);
+
+            setUltimasDespesas(ultimas);
 
         }
 
@@ -42,8 +67,7 @@ function Dashboard() {
         }
 
     }
-
-    return (
+        return (
 
         <div className="container mt-4">
 
@@ -148,8 +172,11 @@ function Dashboard() {
                                 categorias.map((categoria) => (
 
                                     <div
+
                                         key={categoria.categoria}
+
                                         className="d-flex justify-content-between border-bottom py-2"
+
                                     >
 
                                         <strong>
@@ -189,6 +216,108 @@ function Dashboard() {
                         </div>
 
                     </div>
+
+                </div>
+
+            </div>
+
+            <div className="card shadow border-0 mt-4">
+
+                <div className="card-body">
+
+                    <h5 className="mb-3">
+
+                        Últimas Despesas Cadastradas
+
+                    </h5>
+
+                    <table className="table table-striped table-hover">
+
+                        <thead className="table-dark">
+
+                            <tr>
+
+                                <th>Data</th>
+
+                                <th>Categoria</th>
+
+                                <th>Descrição</th>
+
+                                <th className="text-end">
+
+                                    Valor
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {
+
+                                ultimasDespesas.map((expense) => (
+
+                                    <tr key={expense.id}>
+
+                                        <td>
+
+                                            {
+
+                                                new Date(expense.date)
+
+                                                    .toLocaleDateString("pt-BR")
+
+                                            }
+
+                                        </td>
+
+                                        <td>
+
+                                            {expense.category?.name}
+
+                                        </td>
+
+                                        <td>
+
+                                            {expense.description}
+
+                                        </td>
+
+                                        <td className="text-end">
+
+                                            {
+
+                                                Number(expense.amount)
+
+                                                    .toLocaleString(
+
+                                                        "pt-BR",
+
+                                                        {
+
+                                                            style: "currency",
+
+                                                            currency: "BRL"
+
+                                                        }
+
+                                                    )
+
+                                            }
+
+                                        </td>
+
+                                    </tr>
+
+                                ))
+
+                            }
+
+                        </tbody>
+
+                    </table>
 
                 </div>
 
