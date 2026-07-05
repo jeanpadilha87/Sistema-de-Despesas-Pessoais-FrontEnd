@@ -8,6 +8,9 @@ function Expenses() {
     // Lista de despesas.
     const [expenses, setExpenses] = useState([]);
 
+    // Controla o carregamento da tela.
+    const [loading, setLoading] = useState(true);
+
     // Lista de categorias.
     const [categories, setCategories] = useState([]);
     
@@ -36,7 +39,7 @@ function Expenses() {
   async function loadExpenses() {
 
     try {
-
+                setLoading(true);
                 const params = {};
 
         if (filterStatus) {
@@ -86,12 +89,14 @@ function Expenses() {
         console.log(response.data);
 
         setExpenses(response.data);
+        setLoading(false);
 
     }
 
     catch (error) {
 
         console.error(error);
+        setLoading(false);
 
         alert("Erro ao carregar despesas.");
 
@@ -113,6 +118,7 @@ function Expenses() {
         catch (error) {
 
             console.error(error);
+            setLoading(false);
 
         }
 
@@ -206,6 +212,7 @@ useEffect(() => {
            catch (error) {
 
            console.error(error);
+           setLoading(false);
 
            console.log(error.response);
 
@@ -256,6 +263,7 @@ useEffect(() => {
         catch (error) {
 
             console.error(error);
+            setLoading(false);
 
             alert("Erro ao excluir despesa.");
 
@@ -726,6 +734,7 @@ useEffect(() => {
 
             }
 
+
             <table className="table table-striped table-bordered table-hover">
 
                 <thead className="table-dark">
@@ -754,88 +763,119 @@ useEffect(() => {
 
                 </thead>
 
-                <tbody>
+  <tbody>
 
-                    {
+    {
 
-                        expenses.map((expense) => (
+        loading ? (
 
-                            <tr key={expense.id}>
+            <tr>
 
-                                <td>
+                <td colSpan="7" className="text-center py-5">
 
-                                    {expense.id}
+                    <div
+                        className="spinner-border text-primary mb-3"
+                        role="status"
+                    >
 
-                                </td>
+                        <span className="visually-hidden">
 
-                                <td>
+                            Carregando...
 
-                                    {expense.description}
+                        </span>
 
-                                </td>
+                    </div>
 
-                                <td>
+                    <br />
 
-                                    {Number(expense.amount).toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL"
-                                    })}
+                    Carregando despesas...
 
-                                </td>
+                </td>
 
-                                <td>
+            </tr>
 
-                                    {new Date(expense.date).toLocaleDateString("pt-BR")}
+        ) : (
 
-                                </td>
+            expenses.map((expense) => (
 
-                                <td>
+                <tr key={expense.id}>
 
-                                    {expense.status}
+                    <td>
 
-                                </td>
+                        {expense.id}
 
-                                <td>
+                    </td>
 
-                                    {expense.category?.name}
+                    <td>
 
-                                </td>
+                        {expense.description}
 
-                                <td>
+                    </td>
 
-                                    <button
+                    <td>
 
-                                        className="btn btn-warning btn-sm me-2"
+                        {Number(expense.amount).toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL"
+                        })}
 
-                                        onClick={() => editExpense(expense)}
+                    </td>
 
-                                    >
+                    <td>
 
-                                        Editar
+                        {new Date(expense.date).toLocaleDateString("pt-BR")}
 
-                                    </button>
+                    </td>
 
-                                    <button
+                    <td>
 
-                                        className="btn btn-danger btn-sm"
+                        {expense.status}
 
-                                        onClick={() => deleteExpense(expense.id)}
+                    </td>
 
-                                    >
+                    <td>
 
-                                        Excluir
+                        {expense.category?.name}
 
-                                    </button>
+                    </td>
 
-                                </td>
+                    <td>
 
-                            </tr>
+                        <button
 
-                        ))
+                            className="btn btn-warning btn-sm me-2"
 
-                    }
+                            onClick={() => editExpense(expense)}
 
-                </tbody>
+                        >
+
+                            Editar
+
+                        </button>
+
+                        <button
+
+                            className="btn btn-danger btn-sm"
+
+                            onClick={() => deleteExpense(expense.id)}
+
+                        >
+
+                            Excluir
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            ))
+
+        )
+
+    }
+
+</tbody>
 
             </table>
 
